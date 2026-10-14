@@ -1,0 +1,65 @@
+{
+  "skill_name": "nes-reverse-engineering",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我有一个红白机游戏的 ROM，想把它逆向出来做成 Windows 程序，该从哪里开始？",
+      "expected_output": "应先讲平台中立（逆向与目标平台无关），再给流程：ROM 结构分析（iNES 头/PRG CHR/mapper/bank 窗口/CHR RAM 装载型特征）→ 反汇编对照 → 证据化提取 → 翻译与验证阶梯；不得默认绑定 UEFI 或任何单一平台",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "怎么从 NES ROM 里找到游戏用的是哪张图形数据表？",
+      "expected_output": "应给反汇编对照工作流：.PAD/org 明示定位、唯一字节签名定位、多命中时用读表代码交叉引用消歧、指针表 dw 回环校验，并强调证据记录",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "NES 的 2bpp tile 数据怎么解码成像素？",
+      "expected_output": "16 字节/8x8，前 8 行低平面后 8 行高平面，位对组合成 0-3 色号，再经 64 色调色板映射；并提示以目标 ROM 的解码/装载例程为权威",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "元精灵表里四个字节分别是什么？",
+      "expected_output": "OAM 序 {y, tile, attr, x}（有符号偏移）；attr bit6/bit7 为 H/V 翻转；翻转锚点补偿属渲染侧不属提取侧；以目标 ROM 的展开例程为准",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "把这页 6502 反汇编逐行翻译成 C，需要注意什么？",
+      "expected_output": "翻译纪律：命名贴汇编标签、状态机编号迁移一致、定点高低字节逐位还原；quirk 清单（DEC/BNE 计数 0 按 256、进位链只看末次 ADC、隐式寄存器依赖、死代码不翻译）；偏差注释原因；保真优先级",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "怎么验证我的复刻和原版行为一致？",
+      "expected_output": "验证阶梯 L1 结构校验 → L2 golden CRC 双侧互证 → L3 锚定测试（真实环境用例）→ L4 端到端闭环（输入注入+截图+日志+多模态）；证据必须引用具体文件行号帧，不许问用户'看着对不对'",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "ROM 里有个指针表，dw 地址看起来乱序，怎么确认提取对不对？",
+      "expected_output": "以 ptr dw 为权威排出组内顺序；指针回环校验（每个 dw 指向已登记条目）；签名唯一命中 + 读表代码交叉引用消歧；garbage data 的处理",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "把这个红白机游戏复刻成安卓应用，资源提取这步怎么做？",
+      "expected_output": "提取与目标平台无关：bin+manifest+抽样渲染是语言中立产物；C 生成器只是可替换适配层；安卓侧运行验证用 adb 输入注入+截图；不得把目标平台绑死",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "How do I faithfully recreate a NES game from its disassembly without writing a cycle-accurate emulator?",
+      "expected_output": "翻译逻辑+提取资源，不模拟硬件；帧驱动模型（每帧一次、lag frame 语义）；RAM 布局镜像；状态机与命名贴标签；保真优先级；验证阶梯",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "怎么在 EmulatorPkg/WinHost 里调试 UEFI Shell 应用？",
+      "expected_output": "这是 UEFI 平台开发问题，不属于 NES 逆向复刻；应识别并落到 emulator-uefi-shell-app skill（本 skill 只在'目标为 UEFI'时留一行指针）",
+      "files": []
+    }
+  ]
+}
